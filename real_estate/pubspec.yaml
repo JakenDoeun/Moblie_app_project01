@@ -87,3 +87,13 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/image/Image1.jpg
+    - assets/image/Image2.jpg
+    - assets/image/Image3.jpg
+    - assets/image/Image4.jpg
+    - assets/image/Image5.jpg
+    - assets/image/Image6.jpg
