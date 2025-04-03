@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 backgroundColor: Color(0xff1A1A2E),
               ),
               onPressed: () {
-                Navigator.pushNamed(context, '/otp'); 
+                Navigator.pushNamed(context, '/home/otp'); 
               },
               child: Text('Login', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),),
             ),
@@ -103,7 +103,9 @@ class _LoginScreenState extends State<LoginScreen> {
               style: OutlinedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed('/register');
+              },
               child: Text('Sign Up', style: TextStyle(fontSize: 18, color: Color(0xff1A1A2E), fontWeight: FontWeight.w500),),
             ),
             SizedBox(height: 20),

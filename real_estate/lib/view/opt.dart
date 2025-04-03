@@ -152,7 +152,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
               height: 45,
               child: ElevatedButton(
                 onPressed: () {
-                  // Verify code logic here
+                  Navigator.of(context).pushNamed('/home');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: hasInput ? Color(0xff1A1A2E) : Colors.grey[300],

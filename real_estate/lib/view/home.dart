@@ -2,43 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import for input formatters
 
 
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false, // Disable the debug banner
-    home: HomePage(),
-  ));
-}
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   bool isBuySelected = true; // Manage state at the widget level
+
+  // List of filter options
+  final List<String> filterOptions = ['ALL', 'Apartment/Condos', 'Villa', 'Studio'];
+
+  // Map to track selected state for each filter
+  late Map<String, bool> selectedFilters;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize "ALL" as selected and others as unselected
+    selectedFilters = {
+      for (var option in filterOptions) option: option == 'ALL',
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Color(0xFF322D29),
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: Colors.white), // Replaced icon
-          onPressed: () {},
-        ),
+        automaticallyImplyLeading: false,
         title: Text(
           'Home',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Color(0xFF322D29), fontWeight: FontWeight.bold),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings, color: Colors.white), // Changed icon
-            onPressed: () {},
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -52,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
-                        hintText: 'Search property...',
+                        hintText: 'Search property',
                         prefixIcon: Icon(Icons.search, color: Colors.grey),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -469,34 +467,41 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 16),
 
-              // Filter Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FilterChip(
-                    label: Text('ALL'),
-                    onSelected: (_) {},
-                    backgroundColor: Color(0xFF322D29),
-                    labelStyle: TextStyle(color: Colors.white),
-                  ),
-                  FilterChip(
-                    label: Text('Apartment/Condos'),
-                    onSelected: (_) {},
-                    backgroundColor: Colors.grey[200],
-                  ),
-                  FilterChip(
-                    label: Text('Villa'),
-                    onSelected: (_) {},
-                    backgroundColor: Colors.grey[200],
-                  ),
-                  FilterChip(
-                    label: Text('Studio'),
-                    onSelected: (_) {},
-                    backgroundColor: Colors.grey[200],
-                  ),
-                ],
+              // Dynamic FilterChip Section
+              SizedBox(
+                height: 50, // Set a fixed height for the ListView
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+                  itemCount: filterOptions.length,
+                  itemBuilder: (context, index) {
+                    final option = filterOptions[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0), // Add spacing between chips
+                      child: FilterChip(
+                        label: Text(option),
+                        selected: selectedFilters[option]!,
+                        selectedColor: Color(0xFF322D29),
+                        backgroundColor: Colors.grey[200],
+                        labelStyle: TextStyle(
+                          color: selectedFilters[option]! ? Colors.white : Colors.black,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        showCheckmark: false,
+                        onSelected: (bool selected) {
+                          setState(() {
+                            // Ensure only one chip is selected at a time
+                            selectedFilters.updateAll((key, value) => false);
+                            selectedFilters[option] = true;
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Recommended Section
               Row(
@@ -893,7 +898,7 @@ class FilterChipWidget extends StatefulWidget {
   const FilterChipWidget({super.key, required this.label});
 
   @override
-  _FilterChipWidgetState createState() => _FilterChipWidgetState();
+  State<FilterChipWidget> createState() => _FilterChipWidgetState();
 }
 
 class _FilterChipWidgetState extends State<FilterChipWidget> {

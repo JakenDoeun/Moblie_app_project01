@@ -16,8 +16,10 @@ class MyApp extends StatelessWidget {
       title: 'Real Estate App',
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomePage(),
-        '/otp': (context) => const VerificationCodeScreen(),
+        '/': (context) => const LoginScreen(),
+        '/home': (context) => const HomePage(),
+        '/register': (context) => const SignUpScreen(),
+        '/home/otp': (context) => const VerificationCodeScreen(),
         '/forgotPassword': (context) => const ForgotPasswordScreen(),
       },
     );
