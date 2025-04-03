@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 class PropertyDetailPage extends StatefulWidget {
-  const PropertyDetailPage({Key? key}) : super(key: key);
+  const PropertyDetailPage({super.key});
 
   @override
   State<PropertyDetailPage> createState() => _PropertyDetailPageState();

@@ -136,8 +136,8 @@ void calculateAndNavigate() {
                 onPressed: calculateAndNavigate,
                 //child: Text('Calculate'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 247, 240, 255),
-                  foregroundColor: const Color.fromARGB(255, 33, 33, 33),
+                  backgroundColor: const Color.fromARGB(255, 102, 33, 228),
+                  foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                   padding: EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: Text('Calculate', style: TextStyle(fontSize: 20),),
@@ -226,7 +226,7 @@ class ResultScreen extends StatelessWidget {
                     PieChartSectionData(
                       value: loanAmount,
                       title: 'Principal',
-                      color: const Color.fromARGB(255, 25, 104, 168),
+                      color: const Color.fromARGB(255, 102, 33, 228),
                       radius: 60,
                       titleStyle: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
@@ -241,7 +241,7 @@ class ResultScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
@@ -266,10 +266,23 @@ class ResultScreen extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 102, 33, 228),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+              ),
+              child: const Text('Recalculate', style: TextStyle(fontSize: 18)),
+            ),
           ],
         ),
       ),
-            bottomNavigationBar: BottomNavigationBar(
+      
+      bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
             icon:
