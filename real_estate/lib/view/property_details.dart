@@ -126,31 +126,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                       fit: StackFit.expand,
                       children: [
                         // Replace this with your actual image
-                        // Image.asset(mainPropertyImage, fit: BoxFit.cover),
-
-                        // This is a placeholder. Remove this Container when using real image
-                        Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.blue[200]!,
-                                Colors.blue[800]!,
-                              ],
-                            ),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Main Property Image',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ),
+                        Image.asset(mainPropertyImage, fit: BoxFit.cover),
 
                         // Overlay gradient
                         Container(
