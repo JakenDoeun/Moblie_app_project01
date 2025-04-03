@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/rendering.dart';
-// import 'package:google_fonts/google_fonts.dart';
 
 class PropertyDetailPage extends StatefulWidget {
-  const PropertyDetailPage({super.key});
+  final String mainImage;
+  final List<String> roomImages;
+  final String title;
+  final String price;
+  final String location;
+  final String description;
+  final List<String> specifications;
+
+  const PropertyDetailPage({
+    super.key,
+    required this.mainImage,
+    required this.roomImages,
+    required this.title,
+    required this.price,
+    required this.location,
+    required this.description,
+    required this.specifications,
+  });
 
   @override
   State<PropertyDetailPage> createState() => _PropertyDetailPageState();
@@ -12,18 +27,6 @@ class PropertyDetailPage extends StatefulWidget {
 class _PropertyDetailPageState extends State<PropertyDetailPage> {
   final ScrollController _scrollController = ScrollController();
   final PageController _roomImagesController = PageController();
-
-  // CHANGE THESE IMAGE PATHS: Replace the placeholder strings with actual image paths
-  // Main property image path - this is what you'll change to set the main image
-  final String mainPropertyImage = 'assets/image1.jpg'; // CHANGE THIS
-
-  // Sample images for room carousel - this is what you'll change for room images
-  final List<String> roomImages = [
-    'assets/image/Image1.jpg', // CHANGE THESE
-    'assets/image3.jpg',
-    'assets/image4.jpg',
-    'assets/image5.jpg',
-  ];
 
   int _currentRoomImageIndex = 0;
 
@@ -115,7 +118,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Main property image - REPLACE THIS WITH YOUR ACTUAL IMAGE
+                // Main property image
                 Container(
                   height: 280,
                   width: double.infinity,
@@ -125,8 +128,22 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        // Replace this with your actual image
-                        Image.asset(mainPropertyImage, fit: BoxFit.cover),
+                        // Display the main property image with shimmer effect and zoom-in animation
+                        AnimatedScale(
+                          scale: 1.0,
+                          duration: const Duration(milliseconds: 500),
+                          child: Image.asset(
+                            widget.mainImage,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Colors.grey[300],
+                                child: const Icon(Icons.broken_image,
+                                    color: Colors.grey, size: 50),
+                              );
+                            },
+                          ),
+                        ),
 
                         // Overlay gradient
                         Container(
@@ -175,45 +192,90 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                   ),
                 ),
 
-                // Address information
+                // Property title, price, and location
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                  child: Row(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
-                        Icons.location_on,
-                        size: 18,
-                        color: Color(0xFF4F5D75),
-                      ),
-                      const SizedBox(width: 4),
                       Text(
-                        '123 Luxury Avenue, New York',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[700],
+                        widget.title,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2D3142),
                         ),
                       ),
+                      const SizedBox(height: 8),
+                      Text(
+                        widget.price,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Icon(Icons.location_on,
+                              size: 18, color: Colors.grey),
+                          const SizedBox(width: 4),
+                          Text(
+                            widget.location,
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.grey),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
 
-                // Quick info cards
+                // Description
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    children: [
-                      _buildInfoCard(Icons.king_bed, '3', 'Bedrooms'),
-                      const SizedBox(width: 10),
-                      _buildInfoCard(Icons.bathtub, '2', 'Bathrooms'),
-                      const SizedBox(width: 10),
-                      _buildInfoCard(Icons.square_foot, '1500', 'Sq Ft'),
-                      const SizedBox(width: 10),
-                      _buildInfoCard(Icons.directions_car, '2', 'Parking'),
-                    ],
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    widget.description,
+                    style: const TextStyle(fontSize: 16, color: Colors.black87),
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                // Specifications
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Specifications',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2D3142),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      ...widget.specifications.map((spec) => Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.check,
+                                    size: 16, color: Colors.green),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    spec,
+                                    style: const TextStyle(
+                                        fontSize: 14, color: Colors.black87),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ],
+                  ),
+                ),
 
                 // Room images carousel - centered in the screen
                 Padding(
@@ -233,7 +295,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                             ),
                           ),
                           Text(
-                            '${_currentRoomImageIndex + 1}/${roomImages.length}',
+                            '${_currentRoomImageIndex + 1}/${widget.roomImages.length}',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -251,7 +313,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                             // PageView for swiping images
                             PageView.builder(
                               controller: _roomImagesController,
-                              itemCount: roomImages.length,
+                              itemCount: widget.roomImages.length,
                               onPageChanged: (index) {
                                 setState(() {
                                   _currentRoomImageIndex = index;
@@ -264,8 +326,16 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(16),
                                     child: Image.asset(
-                                      roomImages[index],
+                                      widget.roomImages[index],
                                       fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Container(
+                                          color: Colors.grey[300],
+                                          child: const Icon(Icons.broken_image,
+                                              color: Colors.grey, size: 50),
+                                        );
+                                      },
                                     ),
                                   ),
                                 );
@@ -317,7 +387,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                   GestureDetector(
                                     onTap: () {
                                       if (_currentRoomImageIndex <
-                                          roomImages.length - 1) {
+                                          widget.roomImages.length - 1) {
                                         _roomImagesController.nextPage(
                                           duration:
                                               const Duration(milliseconds: 300),
@@ -360,7 +430,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: List.generate(
-                                  roomImages.length,
+                                  widget.roomImages.length,
                                   (index) => AnimatedContainer(
                                     duration: const Duration(milliseconds: 300),
                                     width: _currentRoomImageIndex == index
@@ -386,272 +456,6 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                   ),
                 ),
 
-                const SizedBox(height: 24),
-
-                // Property type and price
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Luxury Apartment',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2D3142),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.green[50],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.home,
-                                        size: 16, color: Colors.green[700]),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      'Apartment',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.green[700],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue[50],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.check_circle,
-                                        size: 16, color: Colors.blue[700]),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      'Verified',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.blue[700],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Text(
-                            '\$1,250,000',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF2D3142),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Specifications section
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'SPECIFICATIONS',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF4F5D75),
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      _buildSpecificationItem(Icons.bathroom,
-                          '3 bathrooms (1 including a Master Suite with bathtub)'),
-                      _buildSpecificationItem(Icons.bedroom_parent,
-                          '2 bedrooms, 2 bathrooms (Modern fittings, size showed)'),
-                      _buildSpecificationItem(
-                          Icons.home, 'Total: 1500+ sqft living space'),
-                      _buildSpecificationItem(
-                          Icons.tv, 'Vintage fixtures with CCTV parking space'),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Detailed Description section
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Detailed Description',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2D3142),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      _buildBulletPoint(
-                          'Modern European-inspired architecture'),
-                      _buildBulletPoint(
-                          'Air-conditioning and heating in all rooms'),
-                      _buildBulletPoint('Parquet floors in all living areas'),
-                      _buildBulletPoint(
-                          'Energy-efficient double glazing windows'),
-                      _buildBulletPoint('Sustainable green building practices'),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Interior section
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'INTERIOR',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2D3142),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      _buildBulletPoint(
-                          'Open plan kitchen, dining, and family room'),
-                      _buildBulletPoint(
-                          'Gourmet kitchen with center island, built-in ovens'),
-                      _buildBulletPoint('Master bedroom with walk-in closet'),
-                      _buildBulletPoint(
-                          '2 luxury bathrooms with Italian porcelain bathroom tiles and rainfall shower heads'),
-                      _buildBulletPoint(
-                          'Spacious living areas with floor-to-ceiling windows and custom leather sofas'),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Amenities section
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Amenities',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2D3142),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      _buildBulletPoint('24-hour concierge service'),
-                      _buildBulletPoint(
-                          'Rooftop pool with integrated poolside lounges'),
-                      _buildBulletPoint('State-of-the-art fitness center'),
-                      _buildBulletPoint('Private cinema room'),
-                      _buildBulletPoint('Business center'),
-                      _buildBulletPoint('High-speed fiber optic internet'),
-                      _buildBulletPoint(
-                          'Underground resident parking with 2 spaces'),
-                      _buildBulletPoint('EV charging stations'),
-                    ],
-                  ),
-                ),
-
-                // Add extra padding at the bottom for the floating button
                 const SizedBox(height: 100),
               ],
             ),
@@ -728,107 +532,6 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                     ),
                   ),
                 ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoCard(IconData icon, String value, String label) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              spreadRadius: 0,
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Icon(icon, color: const Color(0xFF4F5D75)),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF2D3142),
-              ),
-            ),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSpecificationItem(IconData icon, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(icon, size: 20, color: const Color(0xFF4F5D75)),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[800],
-                height: 1.4,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBulletPoint(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 6),
-            width: 6,
-            height: 6,
-            decoration: BoxDecoration(
-              color: const Color(0xFF4F5D75),
-              borderRadius: BorderRadius.circular(3),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[800],
-                height: 1.4,
               ),
             ),
           ),

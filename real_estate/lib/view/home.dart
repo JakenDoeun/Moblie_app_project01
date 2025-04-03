@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import for input formatters
+import 'property_detail.dart';
+import 'see_all_page.dart'; // Import the new page
 
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false, // Disable the debug banner
+    home: HomePage(),
+  ));
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -26,6 +34,7 @@ class _HomePageState extends State<HomePage> {
       for (var option in filterOptions) option: option == 'ALL',
     };
   }
+  bool isBuySelected = true; // Manage state at the widget level
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +44,14 @@ class _HomePageState extends State<HomePage> {
         automaticallyImplyLeading: false,
         title: Text(
           'Home',
-          style: TextStyle(color: Color(0xFF322D29), fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings, color: Colors.white), // Changed icon
+            onPressed: () {},
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -50,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
-                        hintText: 'Search property',
+                        hintText: 'Search property...',
                         prefixIcon: Icon(Icons.search, color: Colors.grey),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -467,41 +482,34 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 16),
 
-              // Dynamic FilterChip Section
-              SizedBox(
-                height: 50, // Set a fixed height for the ListView
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal, // Enable horizontal scrolling
-                  itemCount: filterOptions.length,
-                  itemBuilder: (context, index) {
-                    final option = filterOptions[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8.0), // Add spacing between chips
-                      child: FilterChip(
-                        label: Text(option),
-                        selected: selectedFilters[option]!,
-                        selectedColor: Color(0xFF322D29),
-                        backgroundColor: Colors.grey[200],
-                        labelStyle: TextStyle(
-                          color: selectedFilters[option]! ? Colors.white : Colors.black,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        showCheckmark: false,
-                        onSelected: (bool selected) {
-                          setState(() {
-                            // Ensure only one chip is selected at a time
-                            selectedFilters.updateAll((key, value) => false);
-                            selectedFilters[option] = true;
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
+              // Filter Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FilterChip(
+                    label: Text('ALL'),
+                    onSelected: (_) {},
+                    backgroundColor: Color(0xFF322D29),
+                    labelStyle: TextStyle(color: Colors.white),
+                  ),
+                  FilterChip(
+                    label: Text('Apartment/Condos'),
+                    onSelected: (_) {},
+                    backgroundColor: Colors.grey[200],
+                  ),
+                  FilterChip(
+                    label: Text('Villa'),
+                    onSelected: (_) {},
+                    backgroundColor: Colors.grey[200],
+                  ),
+                  FilterChip(
+                    label: Text('Studio'),
+                    onSelected: (_) {},
+                    backgroundColor: Colors.grey[200],
+                  ),
+                ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
 
               // Recommended Section
               Row(
@@ -513,8 +521,151 @@ class _HomePageState extends State<HomePage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      // Placeholder for "See All" functionality
-                      print('See All clicked');
+                      final allProperties = [
+                        {
+                          'image': 'assets/image/Image1.jpg',
+                          'title': 'The Mekong Garden',
+                          'price': '\$750,000',
+                          'location': 'Khan Chamkar Mon, Phnom Penh',
+                          'bedrooms': 5,
+                          'bathrooms': 4,
+                          'area': '320 sqm',
+                          'description':
+                              'A luxurious garden property with modern amenities.',
+                          'specifications': [
+                            '5 bedrooms with en-suite bathrooms',
+                            'Large garden and swimming pool',
+                            'Modern kitchen with high-end appliances',
+                            'Spacious living and dining areas',
+                          ],
+                        },
+                        {
+                          'image': 'assets/image/Image2.jpg',
+                          'title': 'RIN Village',
+                          'price': '\$350,000',
+                          'location': 'Khan Toul Kork, Phnom Penh',
+                          'bedrooms': 4,
+                          'bathrooms': 3,
+                          'area': '250 sqm',
+                          'description':
+                              'A cozy village property perfect for families.',
+                          'specifications': [
+                            '4 bedrooms with built-in wardrobes',
+                            '2-car garage and private driveway',
+                            'Open-plan kitchen and dining area',
+                            'Close to schools and shopping centers',
+                          ],
+                        },
+                        {
+                          'image': 'assets/image/Image3.jpg',
+                          'title': 'Sunset Villa',
+                          'price': '\$1,200,000',
+                          'location': 'Khan Daun Penh, Phnom Penh',
+                          'bedrooms': 6,
+                          'bathrooms': 5,
+                          'area': '450 sqm',
+                          'description':
+                              'A stunning villa with breathtaking sunset views.',
+                          'specifications': [
+                            '6 bedrooms with panoramic views',
+                            'Infinity pool overlooking the city',
+                            'Home theater and entertainment room',
+                            'Private gym and sauna',
+                          ],
+                        },
+                        {
+                          'image': 'assets/image/Image4.jpg',
+                          'title': 'Modern Studio',
+                          'price': '\$200,000',
+                          'location': 'Khan Chamkar Mon, Phnom Penh',
+                          'bedrooms': 1,
+                          'bathrooms': 1,
+                          'area': '60 sqm',
+                          'description':
+                              'A compact and modern studio for urban living.',
+                          'specifications': [
+                            '1 bedroom with built-in storage',
+                            'Fully equipped kitchenette',
+                            'Balcony with city views',
+                            'Walking distance to public transport',
+                          ],
+                        },
+                        {
+                          'image': 'assets/images/room1.jpg',
+                          'title': 'Luxury Condo',
+                          'price': '\$500,000',
+                          'location': 'Khan Toul Kork, Phnom Penh',
+                          'bedrooms': 3,
+                          'bathrooms': 2,
+                          'area': '200 sqm',
+                          'description': 'A modern condo with luxury finishes.',
+                          'specifications': [
+                            '3 bedrooms with built-in wardrobes',
+                            'Spacious living room with city views',
+                            'Modern kitchen with high-end appliances',
+                            'Private parking space',
+                          ],
+                        },
+                        {
+                          'image': 'assets/images/room2.jpg',
+                          'title': 'Elegant Villa',
+                          'price': '\$1,500,000',
+                          'location': 'Khan Chamkar Mon, Phnom Penh',
+                          'bedrooms': 7,
+                          'bathrooms': 6,
+                          'area': '600 sqm',
+                          'description':
+                              'An elegant villa with a private garden.',
+                          'specifications': [
+                            '7 bedrooms with en-suite bathrooms',
+                            'Private swimming pool and garden',
+                            'Large dining and living areas',
+                            'Home theater and gym',
+                          ],
+                        },
+                        {
+                          'image': 'assets/images/room3.jpg',
+                          'title': 'Cozy Apartment',
+                          'price': '\$300,000',
+                          'location': 'Khan Daun Penh, Phnom Penh',
+                          'bedrooms': 2,
+                          'bathrooms': 2,
+                          'area': '120 sqm',
+                          'description':
+                              'A cozy apartment in the heart of the city.',
+                          'specifications': [
+                            '2 bedrooms with built-in wardrobes',
+                            'Fully equipped kitchen',
+                            'Balcony with city views',
+                            'Close to public transport',
+                          ],
+                        },
+                        {
+                          'image': 'assets/images/room4.jpg',
+                          'title': 'Spacious Townhouse',
+                          'price': '\$800,000',
+                          'location': 'Khan Toul Kork, Phnom Penh',
+                          'bedrooms': 4,
+                          'bathrooms': 3,
+                          'area': '350 sqm',
+                          'description':
+                              'A spacious townhouse with modern amenities.',
+                          'specifications': [
+                            '4 bedrooms with en-suite bathrooms',
+                            'Private garden and parking',
+                            'Modern kitchen and dining area',
+                            'Close to schools and shopping centers',
+                          ],
+                        },
+                      ];
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SeeAllPage(properties: allProperties),
+                        ),
+                      );
                     },
                     child: Text(
                       'See All',
@@ -536,35 +687,67 @@ class _HomePageState extends State<HomePage> {
                         'price': '\$750,000',
                         'location': 'Khan Chamkar Mon, Phnom Penh',
                         'bedrooms': 5,
-                        'bathrooms': 5,
-                        'area': '300 sqm',
+                        'bathrooms': 4,
+                        'area': '320 sqm',
+                        'description':
+                            'A luxurious garden property with modern amenities.',
+                        'specifications': [
+                          '5 bedrooms with en-suite bathrooms',
+                          'Large garden and swimming pool',
+                          'Modern kitchen with high-end appliances',
+                          'Spacious living and dining areas',
+                        ],
                       },
                       {
                         'image': 'assets/image/Image2.jpg',
                         'title': 'RIN Village',
                         'price': '\$350,000',
-                        'location': 'Khan Chamkar Mon, Phnom Penh',
+                        'location': 'Khan Toul Kork, Phnom Penh',
                         'bedrooms': 4,
-                        'bathrooms': 5,
-                        'area': '184 sqm',
+                        'bathrooms': 3,
+                        'area': '250 sqm',
+                        'description':
+                            'A cozy village property perfect for families.',
+                        'specifications': [
+                          '4 bedrooms with built-in wardrobes',
+                          '2-car garage and private driveway',
+                          'Open-plan kitchen and dining area',
+                          'Close to schools and shopping centers',
+                        ],
                       },
                       {
                         'image': 'assets/image/Image3.jpg',
                         'title': 'Sunset Villa',
                         'price': '\$1,200,000',
-                        'location': 'Khan Toul Kork, Phnom Penh',
+                        'location': 'Khan Daun Penh, Phnom Penh',
                         'bedrooms': 6,
-                        'bathrooms': 7,
-                        'area': '500 sqm',
+                        'bathrooms': 5,
+                        'area': '450 sqm',
+                        'description':
+                            'A stunning villa with breathtaking sunset views.',
+                        'specifications': [
+                          '6 bedrooms with panoramic views',
+                          'Infinity pool overlooking the city',
+                          'Home theater and entertainment room',
+                          'Private gym and sauna',
+                        ],
                       },
                       {
                         'image': 'assets/image/Image4.jpg',
                         'title': 'Modern Studio',
                         'price': '\$200,000',
-                        'location': 'Khan Daun Penh, Phnom Penh',
+                        'location': 'Khan Chamkar Mon, Phnom Penh',
                         'bedrooms': 1,
                         'bathrooms': 1,
-                        'area': '50 sqm',
+                        'area': '60 sqm',
+                        'description':
+                            'A compact and modern studio for urban living.',
+                        'specifications': [
+                          '1 bedroom with built-in storage',
+                          'Fully equipped kitchenette',
+                          'Balcony with city views',
+                          'Walking distance to public transport',
+                        ],
                       },
                     ];
 
@@ -587,91 +770,149 @@ class _HomePageState extends State<HomePage> {
                         return Padding(
                           padding: const EdgeInsets.only(
                               right: 16.0), // Add spacing between cards
-                          child: Container(
-                            width: 250, // Set a fixed width for each card
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 8,
-                                  offset: Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(16)),
-                                  child: Image.asset(
-                                    property['image']! as String,
-                                    fit: BoxFit.cover,
-                                    height: 150,
-                                    width: double.infinity,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
+                          child: AnimatedOpacity(
+                            opacity: 1.0,
+                            duration: const Duration(milliseconds: 500),
+                            child: Container(
+                              width: 250, // Set a fixed width for each card
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 8,
+                                    offset: Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(16)),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        try {
+                                          Navigator.push(
+                                            context,
+                                            PageRouteBuilder(
+                                              pageBuilder: (context, animation,
+                                                      secondaryAnimation) =>
+                                                  PropertyDetailPage(
+                                                mainImage: property['image']!
+                                                    as String,
+                                                roomImages: [
+                                                  'assets/images/room1.jpg',
+                                                  'assets/images/room2.jpg',
+                                                  'assets/images/room3.jpg',
+                                                  'assets/images/room4.jpg',
+                                                ],
+                                                title: property['title']!
+                                                    as String,
+                                                price: property['price']!
+                                                    as String,
+                                                location: property['location']!
+                                                    as String,
+                                                description:
+                                                    property['description']!
+                                                        as String,
+                                                specifications:
+                                                    property['specifications']!
+                                                        as List<String>,
+                                              ),
+                                              transitionsBuilder: (context,
+                                                  animation,
+                                                  secondaryAnimation,
+                                                  child) {
+                                                return FadeTransition(
+                                                  opacity: animation,
+                                                  child: child,
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Failed to navigate: $e'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      child: Image.asset(
+                                        property['image']! as String,
+                                        fit: BoxFit.cover,
                                         height: 150,
                                         width: double.infinity,
-                                        color: Colors.grey[300],
-                                        child: Icon(Icons.broken_image,
-                                            color: Colors.grey, size: 50),
-                                      );
-                                    },
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Container(
+                                            height: 150,
+                                            width: double.infinity,
+                                            color: Colors.grey[300],
+                                            child: Icon(Icons.broken_image,
+                                                color: Colors.grey, size: 50),
+                                          );
+                                        },
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        property['title']! as String,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        property['location']! as String,
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 14),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          Icon(Icons.bed,
-                                              size: 16, color: Colors.grey),
-                                          SizedBox(width: 4),
-                                          Text('${property['bedrooms']}'),
-                                          SizedBox(width: 16),
-                                          Icon(Icons.bathtub,
-                                              size: 16, color: Colors.grey),
-                                          SizedBox(width: 4),
-                                          Text('${property['bathrooms']}'),
-                                          SizedBox(width: 16),
-                                          Icon(Icons.square_foot,
-                                              size: 16, color: Colors.grey),
-                                          SizedBox(width: 4),
-                                          Text(property['area']! as String),
-                                        ],
-                                      ),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        property['price']! as String,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                  Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          property['title']! as String,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(height: 4),
+                                        Text(
+                                          property['location']! as String,
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 14),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.bed,
+                                                size: 16, color: Colors.grey),
+                                            SizedBox(width: 4),
+                                            Text('${property['bedrooms']}'),
+                                            SizedBox(width: 16),
+                                            Icon(Icons.bathtub,
+                                                size: 16, color: Colors.grey),
+                                            SizedBox(width: 4),
+                                            Text('${property['bathrooms']}'),
+                                            SizedBox(width: 16),
+                                            Icon(Icons.square_foot,
+                                                size: 16, color: Colors.grey),
+                                            SizedBox(width: 4),
+                                            Text(property['area']! as String),
+                                          ],
+                                        ),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          property['price']! as String,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         );
@@ -862,6 +1103,68 @@ class PropertyCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+// Define a reusable FilterChipWidget
+class FilterChipWidget extends StatefulWidget {
+  final String label;
+
+  const FilterChipWidget({super.key, required this.label});
+
+  @override
+  _FilterChipWidgetState createState() => _FilterChipWidgetState();
+}
+
+class _FilterChipWidgetState extends State<FilterChipWidget> {
+  bool isSelected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return FilterChip(
+      label: Text(widget.label),
+      selected: isSelected,
+      selectedColor: Color(0xFF322D29),
+      labelStyle: TextStyle(
+        color: isSelected ? Colors.white : Colors.black,
+      ),
+      onSelected: (bool selected) {
+        setState(() {
+          isSelected = selected;
+        });
+      },
+    );
+  }
+}
+
+// Define a reusable FilterChipWidget
+class FilterChipWidget extends StatefulWidget {
+  final String label;
+
+  const FilterChipWidget({super.key, required this.label});
+
+  @override
+  _FilterChipWidgetState createState() => _FilterChipWidgetState();
+}
+
+class _FilterChipWidgetState extends State<FilterChipWidget> {
+  bool isSelected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return FilterChip(
+      label: Text(widget.label),
+      selected: isSelected,
+      selectedColor: Color(0xFF322D29),
+      labelStyle: TextStyle(
+        color: isSelected ? Colors.white : Colors.black,
+      ),
+      onSelected: (bool selected) {
+        setState(() {
+          isSelected = selected;
+        });
+      },
     );
   }
 }
