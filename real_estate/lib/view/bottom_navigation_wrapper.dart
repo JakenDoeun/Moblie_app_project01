@@ -15,8 +15,8 @@ class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
   final List<Widget> _pages = [
     const HomePage(),
     const MortgageCalculatorScreen(),
-    // const FavoritesScreen(),
-    const UserProfileScreen(),
+    const LanguageScreen(),
+    const LanguageScreen(),
   ];
 
   void _onItemTapped(int index) {

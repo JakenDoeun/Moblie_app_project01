@@ -67,11 +67,6 @@ class _ProfileScreenState extends State<LanguageScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 65),
-          const Text(
-            'User Profile',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
           Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -84,10 +79,9 @@ class _ProfileScreenState extends State<LanguageScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          const Text(
-            'Username',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-          ),
+          const Text("Keosovann",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
+          const Text("keosovann168@gmail.com", style: TextStyle(fontSize: 14, color: Colors.grey)),
           const SizedBox(height: 45),
           _buildMenuItem(Icons.person, "User Information"),
           const SizedBox(height: 18),
@@ -113,7 +107,6 @@ class _ProfileScreenState extends State<LanguageScreen> {
             ),
           ),
           const Spacer(),
-          _buildBottomNavigationBar(),
         ],
       ),
     );
@@ -142,7 +135,11 @@ class _ProfileScreenState extends State<LanguageScreen> {
                 ),
               ],
             ),
-            const Icon(Icons.arrow_forward_ios, size: 20, color: Colors.black),
+              IconButton(
+                onPressed: () {
+                },
+                icon: const Icon(Icons.arrow_forward_ios, size: 20, color: Colors.black),
+              ),
           ],
         ),
       ),
@@ -181,41 +178,4 @@ class _ProfileScreenState extends State<LanguageScreen> {
       ),
     );
   }
-
-  Widget _buildBottomNavigationBar() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      height: 70,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.home, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.wallet, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.favorite_border, color: Colors.white),
-            onPressed: () {},
-          ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 137, 40, 216),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            ),
-            onPressed: () {},
-            icon: const Icon(Icons.person, color: Colors.white),
-            label: const Text("Profile", style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-  }
-}
+} 
