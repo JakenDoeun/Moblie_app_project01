@@ -99,7 +99,9 @@ class _ProfileScreenState extends State<LanguageScreen> {
                   borderRadius: BorderRadius.circular(18),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/'); // Navigate to login screen
+              },
               child: const Text(
                 'Sign Out',
                 style: TextStyle(color: Colors.black, fontSize: 18),

@@ -90,7 +90,8 @@ void calculateAndNavigate() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mortgage Calculator', style: TextStyle(color: const Color.fromARGB(255, 33, 33, 33))),
+        automaticallyImplyLeading: false,
+        title: Text('Mortgage Calculator', style: TextStyle(color: const Color.fromARGB(255, 33, 33, 33), fontSize: 26, fontWeight: FontWeight.bold)),
         centerTitle: true,
         elevation: 0,
       ),
