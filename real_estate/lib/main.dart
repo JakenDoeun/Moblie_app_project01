@@ -11,8 +11,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const BottomNavigationWrapper(), // Set as the entry point
+      debugShowCheckedModeBanner: false, // Set as the entry point
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LoginScreen(),
+        '/register': (context) => const SignUpScreen(),
+        '/home': (context) => const HomePage(),
+        '/otp': (context) => const VerificationCodeScreen(),
+        '/forgotPassword': (context) => const ForgotPasswordScreen(),
+        '/contact': (context) => const ContactScreen(),
+      },
     );
   }
 }

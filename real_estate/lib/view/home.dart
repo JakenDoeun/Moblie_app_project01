@@ -807,10 +807,10 @@ class _HomePageState extends State<HomePage> {
                                                 mainImage: property['image']!
                                                     as String,
                                                 roomImages: [
-                                                  'assets/images/room1.jpg',
-                                                  'assets/images/room2.jpg',
-                                                  'assets/images/room3.jpg',
-                                                  'assets/images/room4.jpg',
+                                                  'assets/image/P_Room1.jpg',
+                                                  'assets/image/P_Room2.jpg',
+                                                  'assets/image/P_Room3.jpg',
+                                                  'assets/image/P_Room4.jpg',
                                                 ],
                                                 title: property['title']!
                                                     as String,

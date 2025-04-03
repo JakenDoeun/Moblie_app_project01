@@ -8,8 +8,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-
-  ///TextEditingController to manage the email input field. listen if there is an input
+  /// TextEditingController to manage the email input field.
   final TextEditingController _emailController = TextEditingController();
   bool isButtonActive = false;
 
@@ -18,9 +17,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     super.initState();
     _emailController.addListener(() {
       setState(() {
-        isButtonActive = _emailController.text.isNotEmpty;
+        isButtonActive = _isValidEmail(_emailController.text);
       });
     });
+  }
+
+  /// Function to validate email format
+  bool _isValidEmail(String email) {
+    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    return emailRegex.hasMatch(email);
   }
 
   @override
@@ -37,7 +42,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           },
         ),
       ),
-      body:Padding(
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,7 +52,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             const SizedBox(height: 20),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
+              child: const Text(
                 "Forgot Password?",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
@@ -55,10 +60,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             const SizedBox(height: 10),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(  
-              "Please enter your email to reset the password",
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-            )
+              child: const Text(
+                "Please enter your email to reset the password",
+                style: TextStyle(fontSize: 14, color: Colors.grey),
+              ),
             ),
             const SizedBox(height: 10),
             TextField(
@@ -69,16 +74,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(color: Colors.grey),
                 ),
+                errorText: _emailController.text.isNotEmpty && !isButtonActive
+                    ? "Please enter a valid email address"
+                    : null,
               ),
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: isButtonActive ? () {
-                Navigator.pushNamed(context, '/otp');
-              } : null,
+              onPressed: isButtonActive
+                  ? () {
+                      Navigator.pushNamed(context, '/otp');
+                    }
+                  : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: isButtonActive ? Color(0xff1A1A2E) : Colors.grey,
+                backgroundColor: isButtonActive ? const Color(0xff1A1A2E) : Colors.grey,
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(

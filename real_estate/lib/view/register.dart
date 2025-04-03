@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -78,18 +76,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
            _emailController.text.isNotEmpty;
   }
 
-  // void _signUp() {
-  //   if (_isFormValid) {
-  //     // Implement sign up logic
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text('Account created successfully!')),
-  //     );
-  //   } else {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text('Please complete all fields correctly')),
-  //     );
-  //   }
-  // }
+  bool _isValidEmail(String email) {
+    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    return emailRegex.hasMatch(email);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +122,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: _emailController,
                 hintText: 'Email',
                 keyboardType: TextInputType.emailAddress,
+                suffixIcon: _emailController.text.isNotEmpty && !_isValidEmail(_emailController.text)
+                    ? const Icon(Icons.error, color: Colors.red)
+                    : null,
+                obscureText: false,
               ),
               const SizedBox(height: 16.0),
               _buildTextField(
@@ -215,7 +209,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _isFormValid ? (){Navigator.of(context).pushNamed('/home');} : null,
+                  onPressed: _isFormValid ? (){Navigator.of(context).pushNamed('/otp');} : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1A1A2E),
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -241,7 +235,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const Text('Already have an account?'),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/');
+                      Navigator.of(context).pushNamed('/register');
                     },
                     child: const Text(
                       'Login',

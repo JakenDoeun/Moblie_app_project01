@@ -507,6 +507,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
+                        Navigator.pushNamed(context, '/contact');
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Tour request submitted'),
