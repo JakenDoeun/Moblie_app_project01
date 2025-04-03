@@ -260,7 +260,7 @@ class ResultScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   buildInfoRow('Total Monthly Payment', monthlyPayment),
-                  buildInfoRow('Principal Payment', loanAmount / (loanAmount / monthlyPayment)),
+                  buildInfoRow('Principal Payment', monthlyPayment - monthlyInterestPayment),
                   buildInfoRow('Interest Rate', interestRate, isPercentage: true),
                   buildInfoRow('Monthly Interest Payment', monthlyInterestPayment),
                 ],
