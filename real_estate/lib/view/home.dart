@@ -247,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                                                           FilteringTextInputFormatter.digitsOnly
                                                         ],
                                                         decoration: InputDecoration(
-                                                          labelText: '0\$',
+                                                          labelText: 'Start Range\$',
                                                           border: OutlineInputBorder(),
                                                         ),
                                                         onChanged: (value) {
@@ -258,7 +258,7 @@ class _HomePageState extends State<HomePage> {
                                                       ),
                                                     ),
                                                     SizedBox(width: 8),
-                                                    Text('/'),
+                                                    Text('-'),
                                                     SizedBox(width: 8),
                                                     Expanded(
                                                       child: TextField(
@@ -267,7 +267,7 @@ class _HomePageState extends State<HomePage> {
                                                           FilteringTextInputFormatter.digitsOnly
                                                         ],
                                                         decoration: InputDecoration(
-                                                          labelText: '1,000,000+\$',
+                                                          labelText: 'End Range\$',
                                                           border: OutlineInputBorder(),
                                                         ),
                                                         onChanged: (value) {
