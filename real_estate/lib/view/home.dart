@@ -942,32 +942,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon:
-                Icon(Icons.dashboard, color: Color(0xFF322D29)), // Changed icon
-            label: 'Dashboard',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart, color: Colors.grey), // Changed icon
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark, color: Colors.grey), // Changed icon
-            label: 'Bookmarks',
-          ),
-          BottomNavigationBarItem(
-            icon:
-                Icon(Icons.account_circle, color: Colors.grey), // Changed icon
-            label: 'Account',
-          ),
-        ],
-        selectedItemColor: Color(0xFF322D29),
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        backgroundColor: Colors.white,
-      ),
+     
     );
   }
 }
