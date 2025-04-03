@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'view/bottom_navigation_wrapper.dart';
+import 'view/indexfile.dart';
 
 void main() {
   runApp(const MyApp());

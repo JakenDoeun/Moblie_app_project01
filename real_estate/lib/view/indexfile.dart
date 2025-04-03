@@ -6,4 +6,4 @@ export 'package:real_estate/view/register.dart';
 export 'package:real_estate/view/property_details.dart';
 export 'package:real_estate/view/user_info_screen.dart';
 export 'package:real_estate/view/bottom_navigation_wrapper.dart';
-export 'package:real_estate/view/mortgage_cal.dart';
+export 'package:real_estate/view/mortgage_cal.dart' hide main;
