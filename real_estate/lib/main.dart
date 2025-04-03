@@ -14,11 +14,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Real Estate App',
-      initialRoute: '/',
+      initialRoute: '/propertyDetails',
       routes: {
         '/': (context) => const LoginScreen(),
-        '/otp': (context) => const VerificationCodeScreen(),
+        '/home': (context) => const HomePage(),
+        '/register': (context) => const SignUpScreen(),
+        '/home/otp': (context) => const VerificationCodeScreen(),
         '/forgotPassword': (context) => const ForgotPasswordScreen(),
+        '/propertyDetails': (context) => const PropertyDetailPage(),
       },
     );
   }
