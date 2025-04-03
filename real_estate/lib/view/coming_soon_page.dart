@@ -1,25 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
-  runApp(ComingSoonApp());
-}
 
-class ComingSoonApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Coming Soon',
-      theme: ThemeData.light(),
-      home: ComingSoonPage(),
-    );
-  }
-}
 
 class ComingSoonPage extends StatefulWidget {
   @override
-  _ComingSoonPageState createState() => _ComingSoonPageState();
+  State<ComingSoonPage> createState() => _ComingSoonPageState();
 }
 
 class _ComingSoonPageState extends State<ComingSoonPage> with SingleTickerProviderStateMixin {
@@ -84,11 +70,11 @@ class _ComingSoonPageState extends State<ComingSoonPage> with SingleTickerProvid
                       fontSize: 42,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 2,
-                      color: Colors.blueAccent,
+                      color: Colors.black,
                       shadows: [
                         Shadow(
                           blurRadius: 10,
-                          color: Colors.blueAccent.withOpacity(0.6),
+                          color: Colors.green.withOpacity(0.6),
                           offset: Offset(0, 0),
                         ),
                       ],
@@ -98,7 +84,7 @@ class _ComingSoonPageState extends State<ComingSoonPage> with SingleTickerProvid
 
                   // Brief description
                   Text(
-                    "Something amazing is on the way! Please be Patient!",
+                    "Something amazing is on the way! \n Please be Patient!",
                     style: GoogleFonts.montserrat(
                       fontSize: 18,
                       color: Colors.grey[600],

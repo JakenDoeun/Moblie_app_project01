@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import for input formatters
-import 'property_details.dart';
-import 'see_all_page.dart'; // Import the new page
-import 'package:real_estate/view/results_page.dart';
+import 'package:real_estate/view/indexfile.dart';// Import the new page
+import 'package:real_estate/view/property_details.dart'; // Import the detail page
 
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+
+class ResultsPageStateful extends StatefulWidget {
+  const ResultsPageStateful({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<ResultsPageStateful> createState() => _ResultsPageStateful();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ResultsPageStateful extends State<ResultsPageStateful> {
   bool isBuySelected = true; // Manage state at the widget level
   String selectedFilter = 'ALL'; // Add state for selected filter
-
   // List of filter options
   final List<String> filterOptions = ['ALL', 'Apartment/Condos', 'Villa', 'Studio'];
-
   // Map to track selected state for each filter
   late Map<String, bool> selectedFilters;
 
@@ -75,26 +73,22 @@ class _HomePageState extends State<HomePage> {
                     icon: Icon(Icons.tune, color: Colors.grey), // Added icon
                     iconSize: 24, // Adjust size as needed
                     onPressed: () {
-                      bool isBuySelected =
-                          true; // Move state initialization outside the builder
+                      bool isBuySelected = true; // Move state initialization outside the builder
                       String? selectedLocation;
                       String? budgetMin;
                       String? budgetMax;
                       String? area;
                       String? bedrooms;
                       String? rentDuration;
-
                       showModalBottomSheet(
                         context: context,
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(16)),
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                         ),
                         isScrollControlled: true, // Allow the bottom sheet to extend its height
                         builder: (BuildContext context) {
                           return StatefulBuilder(
-                            builder:
-                                (BuildContext context, StateSetter setState) {
+                            builder: (BuildContext context, StateSetter setState) {
                               bool isFormValid() {
                                 if (isBuySelected) {
                                   return selectedLocation != null &&
@@ -180,12 +174,12 @@ class _HomePageState extends State<HomePage> {
                                                   spacing: 8,
                                                   runSpacing: 8,
                                                   children: [
-                                                    FilterChipWidget(label: 'Townhouse'),
-                                                    FilterChipWidget(label: 'Apartment'),
-                                                    FilterChipWidget(label: 'Flat'),
-                                                    FilterChipWidget(label: 'Villa'),
-                                                    FilterChipWidget(label: 'Borey'),
-                                                    FilterChipWidget(label: 'Commercial Plot'),
+                                                    FilterChipWidgetF(label: 'Townhouse'),
+                                                    FilterChipWidgetF(label: 'Apartment'),
+                                                    FilterChipWidgetF(label: 'Flat'),
+                                                    FilterChipWidgetF(label: 'Villa'),
+                                                    FilterChipWidgetF(label: 'Borey'),
+                                                    FilterChipWidgetF(label: 'Commercial Plot'),
                                                   ],
                                                 ),
                                                 SizedBox(height: 16),
@@ -319,11 +313,11 @@ class _HomePageState extends State<HomePage> {
                                                   spacing: 8,
                                                   runSpacing: 8,
                                                   children: [
-                                                    FilterChipWidget(label: 'Studio'),
-                                                    FilterChipWidget(label: 'Apartment'),
-                                                    FilterChipWidget(label: 'Villa'),
-                                                    FilterChipWidget(label: 'Flat'),
-                                                    FilterChipWidget(label: 'Borey'),
+                                                    FilterChipWidgetF(label: 'Studio'),
+                                                    FilterChipWidgetF(label: 'Apartment'),
+                                                    FilterChipWidgetF(label: 'Villa'),
+                                                    FilterChipWidgetF(label: 'Flat'),
+                                                    FilterChipWidgetF(label: 'Borey'),
                                                   ],
                                                 ),
                                                 SizedBox(height: 16),
@@ -477,7 +471,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(height: 16),
-
               // Filter Buttons
               SizedBox(
                 height: 50, // Set a fixed height for the ListView
@@ -513,7 +506,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               SizedBox(height: 16),
-
               // Recommended Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -661,12 +653,11 @@ class _HomePageState extends State<HomePage> {
                           ],
                         },
                       ];
-
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              SeeAllPage(properties: allProperties),
+                              SeeAllScreen(properties: allProperties),
                         ),
                       );
                     },
@@ -679,7 +670,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 16),
               SizedBox(
-                height: 320, // Adjust height to fit PropertyCard with padding
+                height: 320, // Adjust height to fit CardProperty with padding
                 child: Builder(
                   builder: (context) {
                     // Define property data
@@ -753,7 +744,6 @@ class _HomePageState extends State<HomePage> {
                         ],
                       },
                     ];
-
                     if (properties.isEmpty) {
                       return Center(
                         child: Text(
@@ -762,14 +752,12 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     }
-
                     return ListView.builder(
                       scrollDirection:
                           Axis.horizontal, // Enable horizontal scrolling
                       itemCount: properties.length, // Number of properties
                       itemBuilder: (context, index) {
                         final property = properties[index];
-
                         return Padding(
                           padding: const EdgeInsets.only(
                               right: 16.0), // Add spacing between cards
@@ -925,7 +913,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               SizedBox(height: 16),
-
               // Recently Viewed Section
               Text(
                 'Recently Viewed Properties',
@@ -934,7 +921,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 16),
               Column(
                 children: [
-                  PropertyCard(
+                  CardProperty(
                     image:
                         'assets/image/Image2.jpg', // Ensure this file exists in the assets/image/ folder
                     title: 'RIN Village',
@@ -952,12 +939,11 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-     
     );
   }
 }
 
-class PropertyCard extends StatelessWidget {
+class CardProperty extends StatelessWidget {
   final String image;
   final String title;
   final String price;
@@ -968,7 +954,7 @@ class PropertyCard extends StatelessWidget {
   final String area;
   final String availability;
 
-  const PropertyCard({
+  const CardProperty({
     super.key,
     required this.image,
     required this.title,
@@ -1110,17 +1096,44 @@ class PropertyCard extends StatelessWidget {
   }
 }
 
-// Define a reusable FilterChipWidget
-class FilterChipWidget extends StatefulWidget {
-  final String label;
+// Define the SeeAllScreen class
+class SeeAllScreen extends StatelessWidget {
+  final List<Map<String, dynamic>> properties;
 
-  const FilterChipWidget({super.key, required this.label});
+  const SeeAllScreen({super.key, required this.properties});
 
   @override
-  _FilterChipWidgetState createState() => _FilterChipWidgetState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('All Properties'),
+      ),
+      body: ListView.builder(
+        itemCount: properties.length,
+        itemBuilder: (context, index) {
+          final property = properties[index];
+          return ListTile(
+            leading: Image.asset(property['image']! as String),
+            title: Text(property['title']! as String),
+            subtitle: Text('${property['price']} - ${property['location']}'),
+          );
+        },
+      ),
+    );
+  }
 }
 
-class _FilterChipWidgetState extends State<FilterChipWidget> {
+// Define a reusable FilterChipWidgetF
+class FilterChipWidgetF extends StatefulWidget {
+  final String label;
+
+  const FilterChipWidgetF({super.key, required this.label});
+
+  @override
+  _FilterChipWidgetFState createState() => _FilterChipWidgetFState();
+}
+
+class _FilterChipWidgetFState extends State<FilterChipWidgetF> {
   bool isSelected = false;
 
   @override
@@ -1137,6 +1150,307 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
           isSelected = selected;
         });
       },
+    );
+  }
+}
+
+class ResultsPage extends StatelessWidget {
+  final Map<String, dynamic> filters;
+
+  const ResultsPage({super.key, required this.filters});
+
+  @override
+  Widget build(BuildContext context) {
+    // Example property data
+    final properties = [
+      {
+        'image': 'assets/image/Image1.jpg',
+        'title': 'The Mekong Garden',
+        'price': '\$750,000',
+        'location': 'Phnom Penh',
+        'bedrooms': 5,
+        'bathrooms': 4,
+        'area': '320 sqm',
+        'description': 'A luxurious garden property with modern amenities.',
+        'specifications': [
+          '5 bedrooms with en-suite bathrooms',
+          'Large garden and swimming pool',
+          'Modern kitchen with high-end appliances',
+        ],
+      },
+      {
+        'image': 'assets/image/Image2.jpg',
+        'title': 'RIN Village',
+        'price': '\$350,000',
+        'location': 'Phnom Penh',
+        'bedrooms': 4,
+        'bathrooms': 3,
+        'area': '250 sqm',
+        'description': 'A cozy village property perfect for families.',
+        'specifications': [
+          '4 bedrooms with built-in wardrobes',
+          '2-car garage and private driveway',
+          'Open-plan kitchen and dining area',
+        ],
+      },
+       {
+        'image': 'assets/image/Image3.jpg',
+        'title': 'Sunset Villa',
+        'price': '\$1,200,000',
+        'location': 'Phnom Penh',
+        'bedrooms': 6,
+        'bathrooms': 5,
+        'area': '450 sqm',
+        'description':
+            'A stunning villa with breathtaking sunset views.',
+        'specifications': [
+          '6 bedrooms with panoramic views',
+          'Infinity pool overlooking the city',
+          'Home theater and entertainment room',
+          'Private gym and sauna',
+        ],
+      },
+      {
+        'image': 'assets/image/Image4.jpg',
+        'title': 'Modern Studio',
+        'price': '\$200,000',
+        'location': 'Siem Reap',
+        'bedrooms': 1,
+        'bathrooms': 1,
+        'area': '60 sqm',
+        'description':
+            'A compact and modern studio for urban living.',
+        'specifications': [
+          '1 bedroom with built-in storage',
+          'Fully equipped kitchenette',
+          'Balcony with city views',
+          'Walking distance to public transport',
+        ],
+      },
+      {
+        'image': 'assets/image/Image5.jpg',
+        'title': 'Luxury Condo',
+        'price': '\$500,000',
+        'location': 'Phnom Penh',
+        'bedrooms': 3,
+        'bathrooms': 2,
+        'area': '200 sqm',
+        'description': 'A modern condo with luxury finishes.',
+        'specifications': [
+          '3 bedrooms with built-in wardrobes',
+          'Spacious living room with city views',
+          'Modern kitchen with high-end appliances',
+          'Private parking space',
+        ],
+      },
+      {
+        'image': 'assets/image/Image6.jpg',
+        'title': 'Elegant Villa',
+        'price': '\$1,500,000',
+        'location': 'Phnom Penh',
+        'bedrooms': 7,
+        'bathrooms': 6,
+        'area': '600 sqm',
+        'description':
+            'An elegant villa with a private garden.',
+        'specifications': [
+          '7 bedrooms with en-suite bathrooms',
+          'Private swimming pool and garden',
+          'Large dining and living areas',
+          'Home theater and gym',
+        ],
+      },
+      {
+        'image': 'assets/image/Property1.jpg',
+        'title': 'Cozy Apartment',
+        'price': '\$300,000',
+        'location': 'Phnom Penh',
+        'bedrooms': 2,
+        'bathrooms': 2,
+        'area': '120 sqm',
+        'description':
+            'A cozy apartment in the heart of the city.',
+        'specifications': [
+          '2 bedrooms with built-in wardrobes',
+          'Fully equipped kitchen',
+          'Balcony with city views',
+          'Close to public transport',
+        ],
+      },
+      {
+        'image': 'assets/image/Image3.jpg',
+        'title': 'Spacious Townhouse',
+        'price': '\$800,000',
+        'location': 'Phnom Penh',
+        'bedrooms': 4,
+        'bathrooms': 3,
+        'area': '350 sqm',
+        'description':
+            'A spacious townhouse with modern amenities.',
+        'specifications': [
+          '4 bedrooms with en-suite bathrooms',
+          'Private garden and parking',
+          'Modern kitchen and dining area',
+          'Close to schools and shopping centers',
+        ],
+      },
+    ];
+
+    // Filter logic
+    final filteredProperties = properties.where((property) {
+      int matchCount = 0;
+
+      // Check each condition and increment matchCount if it passes
+      if (filters['selectedLocation'] != null &&
+          filters['selectedLocation'] == property['location']) {
+        print('Property: ${property['title']}, Match Count: $matchCount');
+        matchCount++;
+        print('Property: ${property['location']}, Match Count: $matchCount');
+      }
+      // Check budget range (combined condition for budgetMin and budgetMax)
+      if (filters['budgetMin'] != null &&
+          filters['budgetMax'] != null &&
+          int.tryParse(filters['budgetMin'] as String) != null &&
+          int.tryParse(filters['budgetMax'] as String) != null) {
+        final propertyPrice = int.tryParse(
+          (property['price'] as String).replaceAll(RegExp(r'[^0-9]'), ''),
+        );
+        final minBudget = int.parse(filters['budgetMin'] as String);
+        final maxBudget = int.parse(filters['budgetMax'] as String);
+
+        if (propertyPrice != null && propertyPrice >= minBudget && propertyPrice <= maxBudget) {
+          print('Property: ${property['price']}, Match Count: $matchCount');
+          matchCount++;
+        }
+      }
+      if (filters['bedrooms'] != null &&
+          int.tryParse(filters['bedrooms'] as String) != null &&
+          int.parse(filters['bedrooms'] as String) <= (property['bedrooms'] as int)) {
+        matchCount++;
+        print('Property: ${property['bedrooms']}, Match Count: $matchCount');
+      }
+
+      // Include the property if at least 3 conditions are met
+      return matchCount >= 3;
+    }).toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Filtered Results'),
+      ),
+      body: filteredProperties.isEmpty
+          ? const Center(
+              child: Text('No properties match your filters.'),
+            )
+          : GridView.builder(
+              padding: const EdgeInsets.all(16.0),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // Number of cards per row
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+                childAspectRatio: 0.75, // Adjust the aspect ratio for card size
+              ),
+              itemCount: filteredProperties.length,
+              itemBuilder: (context, index) {
+                final property = filteredProperties[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PropertyDetailPage(
+                          mainImage: property['image'] as String,
+                          roomImages: [
+                            'assets/image/P_Room1.jpg',
+                            'assets/image/P_Room2.jpg',
+                            'assets/image/P_Room3.jpg',
+                            'assets/image/P_Room4.jpg',
+                          ],
+                          title: property['title'] as String,
+                          price: property['price'] as String,
+                          location: property['location'] as String,
+                          description: property['description'] as String,
+                          specifications: property['specifications'] as List<String>,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(16.0),
+                          ),
+                          child: Image.asset(
+                            property['image'] as String,
+                            height: 150,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                height: 150,
+                                color: Colors.grey[300],
+                                child: const Icon(Icons.broken_image, size: 50, color: Colors.grey),
+                              );
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                property['title'] as String,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                property['location'] as String,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  const Icon(Icons.bed, size: 16, color: Colors.grey),
+                                  const SizedBox(width: 4),
+                                  Text('${property['bedrooms']}'),
+                                  const SizedBox(width: 16),
+                                  const Icon(Icons.bathtub, size: 16, color: Colors.grey),
+                                  const SizedBox(width: 4),
+                                  Text('${property['bathrooms']}'),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                property['price'] as String,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
     );
   }
 }
