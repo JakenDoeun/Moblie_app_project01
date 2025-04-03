@@ -65,6 +65,12 @@ flutter:
   assets:
     - lib\img\Login-rafiki.png
     - lib\img\Forgot_password.png
+    - assets/image/Image1.jpg
+    - assets/image/Image2.jpg
+    - assets/image/Image3.jpg
+    - assets/image/Image4.jpg
+    - assets/image/Image5.jpg
+    - assets/image/Image6.jpg
    
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -93,11 +99,3 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
-
-  assets:
-    - assets/image/Image1.jpg
-    - assets/image/Image2.jpg
-    - assets/image/Image3.jpg
-    - assets/image/Image4.jpg
-    - assets/image/Image5.jpg
-    - assets/image/Image6.jpg
