@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import for input formatters
-import 'property_detail.dart';
+import 'property_details.dart';
 import 'see_all_page.dart'; // Import the new page
 
 void main() {
@@ -19,6 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isBuySelected = true; // Manage state at the widget level
+  String selectedFilter = 'ALL'; // Add state for selected filter
 
   // List of filter options
   final List<String> filterOptions = ['ALL', 'Apartment/Condos', 'Villa', 'Studio'];
@@ -34,17 +35,14 @@ class _HomePageState extends State<HomePage> {
       for (var option in filterOptions) option: option == 'ALL',
     };
   }
-  bool isBuySelected = true; // Manage state at the widget level
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
         title: Text(
           'Home',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Color(0xFF322D29), fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
@@ -65,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
-                        hintText: 'Search property...',
+                        hintText: 'Search property',
                         prefixIcon: Icon(Icons.search, color: Colors.grey),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -97,6 +95,7 @@ class _HomePageState extends State<HomePage> {
                           borderRadius:
                               BorderRadius.vertical(top: Radius.circular(16)),
                         ),
+                        isScrollControlled: true, // Allow the bottom sheet to extend its height
                         builder: (BuildContext context) {
                           return StatefulBuilder(
                             builder:
@@ -115,7 +114,6 @@ class _HomePageState extends State<HomePage> {
                                       bedrooms?.isNotEmpty == true;
                                 } else {
                                   return selectedLocation != null &&
-                                      selectedLocation != null &&
                                       selectedLocation?.isNotEmpty == true &&
                                       area != null &&
                                       area?.isNotEmpty == true &&
@@ -126,351 +124,339 @@ class _HomePageState extends State<HomePage> {
                                 }
                               }
 
-                              return Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Choose property',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(height: 16),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        ChoiceChip(
-                                          label: Text('Buy'),
-                                          selected: isBuySelected,
-                                          selectedColor: Color(0xFF322D29),
-                                          labelStyle: TextStyle(
-                                            color: isBuySelected
-                                                ? Colors.white
-                                                : Colors.black,
-                                          ),
-                                          onSelected: (bool selected) {
-                                            setState(() {
-                                              isBuySelected = true;
-                                            });
-                                          },
-                                        ),
-                                        ChoiceChip(
-                                          label: Text('Rent'),
-                                          selected: !isBuySelected,
-                                          selectedColor: Color(0xFF322D29),
-                                          labelStyle: TextStyle(
-                                            color: !isBuySelected
-                                                ? Colors.white
-                                                : Colors.black,
-                                          ),
-                                          onSelected: (bool selected) {
-                                            setState(() {
-                                              isBuySelected = false;
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 16),
-                                    if (isBuySelected)
-                                      // Buy Part
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                              return DraggableScrollableSheet(
+                                initialChildSize: 0.8, // Set the initial height as a fraction of the screen height
+                                minChildSize: 0.4, // Set the minimum height
+                                maxChildSize: 1, // Set the maximum height
+                                expand: false, // Allow the sheet to be draggable
+                                builder: (context, scrollController) {
+                                  return SingleChildScrollView(
+                                    controller: scrollController, // Attach the scroll controller
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Wrap(
-                                            spacing: 8,
-                                            runSpacing: 8,
-                                            children: [
-                                              FilterChipWidget(
-                                                  label: 'Townhouse'),
-                                              FilterChipWidget(
-                                                  label: 'Apartment'),
-                                              FilterChipWidget(label: 'Flat'),
-                                              FilterChipWidget(label: 'Villa'),
-                                              FilterChipWidget(label: 'Borey'),
-                                              FilterChipWidget(
-                                                  label: 'Commercial Plot'),
-                                            ],
-                                          ),
-                                          SizedBox(height: 16),
-                                          DropdownButtonFormField<String>(
-                                            decoration: InputDecoration(
-                                              labelText: 'Choose Location',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            items: [
-                                              'Phnom Penh',
-                                              'Siem Reap',
-                                              'Battambang',
-                                              'Sihanoukville',
-                                              'Kampong Cham',
-                                              'Kampot',
-                                              'Takeo',
-                                              'Kandal',
-                                              'Prey Veng',
-                                              'Svay Rieng',
-                                              'Pursat',
-                                              'Koh Kong',
-                                              'Ratanakiri',
-                                              'Mondulkiri',
-                                              'Stung Treng',
-                                              'Kratie',
-                                              'Oddar Meanchey',
-                                              'Banteay Meanchey',
-                                              'Pailin',
-                                              'Kampong Thom',
-                                              'Kampong Speu',
-                                              'Kampong Chhnang',
-                                              'Preah Vihear',
-                                              'Tbong Khmum',
-                                              'Kep',
-                                            ].map((String location) {
-                                              return DropdownMenuItem<String>(
-                                                value: location,
-                                                child: Text(location),
-                                              );
-                                            }).toList(),
-                                            onChanged: (String? value) {
-                                              setState(() {
-                                                selectedLocation = value;
-                                              });
-                                            },
+                                          Text(
+                                            'Choose property',
+                                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                           ),
                                           SizedBox(height: 16),
                                           Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Expanded(
-                                                child: TextField(
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  inputFormatters: [
-                                                    FilteringTextInputFormatter
-                                                        .digitsOnly
-                                                  ],
-                                                  decoration: InputDecoration(
-                                                    labelText: '0\$',
-                                                    border:
-                                                        OutlineInputBorder(),
-                                                  ),
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      budgetMin = value;
-                                                    });
-                                                  },
+                                              ChoiceChip(
+                                                label: Text('Buy'),
+                                                selected: isBuySelected,
+                                                selectedColor: Color(0xFF322D29),
+                                                labelStyle: TextStyle(
+                                                  color: isBuySelected ? Colors.white : Colors.black,
                                                 ),
+                                                onSelected: (bool selected) {
+                                                  setState(() {
+                                                    isBuySelected = true;
+                                                  });
+                                                },
+                                                showCheckmark: false,
                                               ),
-                                              SizedBox(width: 8),
-                                              Text('/'),
-                                              SizedBox(width: 8),
-                                              Expanded(
-                                                child: TextField(
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  inputFormatters: [
-                                                    FilteringTextInputFormatter
-                                                        .digitsOnly
-                                                  ],
-                                                  decoration: InputDecoration(
-                                                    labelText: '1,000,000+\$',
-                                                    border:
-                                                        OutlineInputBorder(),
-                                                  ),
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      budgetMax = value;
-                                                    });
-                                                  },
+                                              ChoiceChip(
+                                                label: Text('Rent'),
+                                                selected: !isBuySelected,
+                                                selectedColor: Color(0xFF322D29),
+                                                labelStyle: TextStyle(
+                                                  color: !isBuySelected ? Colors.white : Colors.black,
                                                 ),
+                                                onSelected: (bool selected) {
+                                                  setState(() {
+                                                    isBuySelected = false;
+                                                  });
+                                                },
+                                                showCheckmark: false,
                                               ),
                                             ],
                                           ),
                                           SizedBox(height: 16),
-                                          TextField(
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
-                                            ],
-                                            decoration: InputDecoration(
-                                              labelText: 'Insert Area',
-                                              hintText: 'In Meter Square',
-                                              border: OutlineInputBorder(),
+                                          if (isBuySelected)
+                                            // Buy Part
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Wrap(
+                                                  spacing: 8,
+                                                  runSpacing: 8,
+                                                  children: [
+                                                    FilterChipWidget(label: 'Townhouse'),
+                                                    FilterChipWidget(label: 'Apartment'),
+                                                    FilterChipWidget(label: 'Flat'),
+                                                    FilterChipWidget(label: 'Villa'),
+                                                    FilterChipWidget(label: 'Borey'),
+                                                    FilterChipWidget(label: 'Commercial Plot'),
+                                                  ],
+                                                ),
+                                                SizedBox(height: 16),
+                                                DropdownButtonFormField<String>(
+                                                  decoration: InputDecoration(
+                                                    labelText: 'Choose Location',
+                                                    border: OutlineInputBorder(),
+                                                  ),
+                                                  items: [
+                                                    'Phnom Penh',
+                                                    'Siem Reap',
+                                                    'Battambang',
+                                                    'Sihanoukville',
+                                                    'Kampong Cham',
+                                                    'Kampot',
+                                                    'Takeo',
+                                                    'Kandal',
+                                                    'Prey Veng',
+                                                    'Svay Rieng',
+                                                    'Pursat',
+                                                    'Koh Kong',
+                                                    'Ratanakiri',
+                                                    'Mondulkiri',
+                                                    'Stung Treng',
+                                                    'Kratie',
+                                                    'Oddar Meanchey',
+                                                    'Banteay Meanchey',
+                                                    'Pailin',
+                                                    'Kampong Thom',
+                                                    'Kampong Speu',
+                                                    'Kampong Chhnang',
+                                                    'Preah Vihear',
+                                                    'Tbong Khmum',
+                                                    'Kep',
+                                                  ].map((String location) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: location,
+                                                      child: Text(location),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (String? value) {
+                                                    setState(() {
+                                                      selectedLocation = value;
+                                                    });
+                                                  },
+                                                ),
+                                                SizedBox(height: 16),
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: TextField(
+                                                        keyboardType: TextInputType.number,
+                                                        inputFormatters: [
+                                                          FilteringTextInputFormatter.digitsOnly
+                                                        ],
+                                                        decoration: InputDecoration(
+                                                          labelText: '0\$',
+                                                          border: OutlineInputBorder(),
+                                                        ),
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            budgetMin = value;
+                                                          });
+                                                        },
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 8),
+                                                    Text('/'),
+                                                    SizedBox(width: 8),
+                                                    Expanded(
+                                                      child: TextField(
+                                                        keyboardType: TextInputType.number,
+                                                        inputFormatters: [
+                                                          FilteringTextInputFormatter.digitsOnly
+                                                        ],
+                                                        decoration: InputDecoration(
+                                                          labelText: '1,000,000+\$',
+                                                          border: OutlineInputBorder(),
+                                                        ),
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            budgetMax = value;
+                                                          });
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: 16),
+                                                TextField(
+                                                  keyboardType: TextInputType.number,
+                                                  inputFormatters: [
+                                                    FilteringTextInputFormatter.digitsOnly
+                                                  ],
+                                                  decoration: InputDecoration(
+                                                    labelText: 'Insert Area',
+                                                    hintText: 'In Meter Square',
+                                                    border: OutlineInputBorder(),
+                                                  ),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      area = value;
+                                                    });
+                                                  },
+                                                ),
+                                                SizedBox(height: 16),
+                                                TextField(
+                                                  keyboardType: TextInputType.number,
+                                                  inputFormatters: [
+                                                    FilteringTextInputFormatter.digitsOnly
+                                                  ],
+                                                  decoration: InputDecoration(
+                                                    labelText: 'Insert the bedroom',
+                                                    hintText: '1 - 5+',
+                                                    border: OutlineInputBorder(),
+                                                  ),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      bedrooms = value;
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            )
+                                          else
+                                            // Rent Part
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Wrap(
+                                                  spacing: 8,
+                                                  runSpacing: 8,
+                                                  children: [
+                                                    FilterChipWidget(label: 'Studio'),
+                                                    FilterChipWidget(label: 'Apartment'),
+                                                    FilterChipWidget(label: 'Villa'),
+                                                    FilterChipWidget(label: 'Flat'),
+                                                    FilterChipWidget(label: 'Borey'),
+                                                  ],
+                                                ),
+                                                SizedBox(height: 16),
+                                                DropdownButtonFormField<String>(
+                                                  decoration: InputDecoration(
+                                                    labelText: 'Choose Location',
+                                                    border: OutlineInputBorder(),
+                                                  ),
+                                                  items: [
+                                                    'Phnom Penh',
+                                                    'Siem Reap',
+                                                    'Battambang',
+                                                    'Sihanoukville',
+                                                    'Kampong Cham',
+                                                    'Kampot',
+                                                    'Takeo',
+                                                    'Kandal',
+                                                    'Prey Veng',
+                                                    'Svay Rieng',
+                                                    'Pursat',
+                                                    'Koh Kong',
+                                                    'Ratanakiri',
+                                                    'Mondulkiri',
+                                                    'Stung Treng',
+                                                    'Kratie',
+                                                    'Oddar Meanchey',
+                                                    'Banteay Meanchey',
+                                                    'Pailin',
+                                                    'Kampong Thom',
+                                                    'Kampong Speu',
+                                                    'Kampong Chhnang',
+                                                    'Preah Vihear',
+                                                    'Tbong Khmum',
+                                                    'Kep',
+                                                  ].map((String location) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: location,
+                                                      child: Text(location),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (String? value) {
+                                                    setState(() {
+                                                      selectedLocation = value;
+                                                    });
+                                                  },
+                                                ),
+                                                SizedBox(height: 16),
+                                                TextField(
+                                                  keyboardType: TextInputType.number,
+                                                  inputFormatters: [
+                                                    FilteringTextInputFormatter.digitsOnly
+                                                  ],
+                                                  decoration: InputDecoration(
+                                                    labelText: 'Insert Area',
+                                                    hintText: 'In Meter Square',
+                                                    border: OutlineInputBorder(),
+                                                  ),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      area = value;
+                                                    });
+                                                  },
+                                                ),
+                                                SizedBox(height: 16),
+                                                TextField(
+                                                  keyboardType: TextInputType.number,
+                                                  inputFormatters: [
+                                                    FilteringTextInputFormatter.digitsOnly
+                                                  ],
+                                                  decoration: InputDecoration(
+                                                    labelText: 'Insert the bedroom',
+                                                    hintText: '1 - 5+',
+                                                    border: OutlineInputBorder(),
+                                                  ),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      bedrooms = value;
+                                                    });
+                                                  },
+                                                ),
+                                                SizedBox(height: 16),
+                                                TextField(
+                                                  keyboardType: TextInputType.number,
+                                                  inputFormatters: [
+                                                    FilteringTextInputFormatter.digitsOnly
+                                                  ],
+                                                  decoration: InputDecoration(
+                                                    labelText: 'Rent for',
+                                                    hintText: '1 - 10 year+',
+                                                    border: OutlineInputBorder(),
+                                                  ),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      rentDuration = value;
+                                                    });
+                                                  },
+                                                ),
+                                              ],
                                             ),
-                                            onChanged: (value) {
-                                              setState(() {
-                                                area = value;
-                                              });
-                                            },
-                                          ),
                                           SizedBox(height: 16),
-                                          TextField(
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
-                                            ],
-                                            decoration: InputDecoration(
-                                              labelText: 'Insert the bedroom',
-                                              hintText: '1 - 5+',
-                                              border: OutlineInputBorder(),
+                                          ElevatedButton(
+                                            onPressed: isFormValid()
+                                                ? () {
+                                                    Navigator.pop(
+                                                        context); // Close the modal
+                                                  }
+                                                : null,
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: isFormValid()
+                                                  ? Color(0xFF322D29)
+                                                  : Colors.grey[400],
                                             ),
-                                            onChanged: (value) {
-                                              setState(() {
-                                                bedrooms = value;
-                                              });
-                                            },
+                                            child: Center(
+                                              child: Text(
+                                                'Filter',
+                                                style: TextStyle(
+                                                  color: isFormValid()
+                                                      ? Colors.white
+                                                      : Colors.black54,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ],
-                                      )
-                                    else
-                                      // Rent Part
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Wrap(
-                                            spacing: 8,
-                                            runSpacing: 8,
-                                            children: [
-                                              FilterChipWidget(label: 'Studio'),
-                                              FilterChipWidget(
-                                                  label: 'Apartment'),
-                                              FilterChipWidget(label: 'Villa'),
-                                              FilterChipWidget(label: 'Flat'),
-                                              FilterChipWidget(label: 'Borey'),
-                                            ],
-                                          ),
-                                          SizedBox(height: 16),
-                                          DropdownButtonFormField<String>(
-                                            decoration: InputDecoration(
-                                              labelText: 'Choose Location',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            items: [
-                                              'Phnom Penh',
-                                              'Siem Reap',
-                                              'Battambang',
-                                              'Sihanoukville',
-                                              'Kampong Cham',
-                                              'Kampot',
-                                              'Takeo',
-                                              'Kandal',
-                                              'Prey Veng',
-                                              'Svay Rieng',
-                                              'Pursat',
-                                              'Koh Kong',
-                                              'Ratanakiri',
-                                              'Mondulkiri',
-                                              'Stung Treng',
-                                              'Kratie',
-                                              'Oddar Meanchey',
-                                              'Banteay Meanchey',
-                                              'Pailin',
-                                              'Kampong Thom',
-                                              'Kampong Speu',
-                                              'Kampong Chhnang',
-                                              'Preah Vihear',
-                                              'Tbong Khmum',
-                                              'Kep',
-                                            ].map((String location) {
-                                              return DropdownMenuItem<String>(
-                                                value: location,
-                                                child: Text(location),
-                                              );
-                                            }).toList(),
-                                            onChanged: (String? value) {
-                                              setState(() {
-                                                selectedLocation = value;
-                                              });
-                                            },
-                                          ),
-                                          SizedBox(height: 16),
-                                          TextField(
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
-                                            ],
-                                            decoration: InputDecoration(
-                                              labelText: 'Insert Area',
-                                              hintText: 'In Meter Square',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            onChanged: (value) {
-                                              setState(() {
-                                                area = value;
-                                              });
-                                            },
-                                          ),
-                                          SizedBox(height: 16),
-                                          TextField(
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
-                                            ],
-                                            decoration: InputDecoration(
-                                              labelText: 'Insert the bedroom',
-                                              hintText: '1 - 5+',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            onChanged: (value) {
-                                              setState(() {
-                                                bedrooms = value;
-                                              });
-                                            },
-                                          ),
-                                          SizedBox(height: 16),
-                                          TextField(
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
-                                            ],
-                                            decoration: InputDecoration(
-                                              labelText: 'Rent for',
-                                              hintText: '1 - 10 year+',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            onChanged: (value) {
-                                              setState(() {
-                                                rentDuration = value;
-                                              });
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    SizedBox(height: 16),
-                                    ElevatedButton(
-                                      onPressed: isFormValid()
-                                          ? () {
-                                              Navigator.pop(
-                                                  context); // Close the modal
-                                            }
-                                          : null,
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: isFormValid()
-                                            ? Color(0xFF322D29)
-                                            : Colors.grey[400],
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'Filter',
-                                          style: TextStyle(
-                                            color: isFormValid()
-                                                ? Colors.white
-                                                : Colors.black54,
-                                          ),
-                                        ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  );
+                                },
                               );
                             },
                           );
@@ -483,31 +469,38 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 16),
 
               // Filter Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FilterChip(
-                    label: Text('ALL'),
-                    onSelected: (_) {},
-                    backgroundColor: Color(0xFF322D29),
-                    labelStyle: TextStyle(color: Colors.white),
-                  ),
-                  FilterChip(
-                    label: Text('Apartment/Condos'),
-                    onSelected: (_) {},
-                    backgroundColor: Colors.grey[200],
-                  ),
-                  FilterChip(
-                    label: Text('Villa'),
-                    onSelected: (_) {},
-                    backgroundColor: Colors.grey[200],
-                  ),
-                  FilterChip(
-                    label: Text('Studio'),
-                    onSelected: (_) {},
-                    backgroundColor: Colors.grey[200],
-                  ),
-                ],
+              SizedBox(
+                height: 50, // Set a fixed height for the ListView
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+                  itemCount: filterOptions.length, // Number of filter options
+                  itemBuilder: (context, index) {
+                    final option = filterOptions[index]; // Current filter option
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0), // Add spacing between chips
+                      child: FilterChip(
+                        label: Text(option),
+                        selected: selectedFilters[option]!, // Check if this chip is selected
+                        selectedColor: Color(0xFF322D29), // Highlight color for selected chip
+                        backgroundColor: Colors.grey[200], // Background color for unselected chips
+                        labelStyle: TextStyle(
+                          color: selectedFilters[option]! ? Colors.white : Colors.black, // Text color
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25), // Rounded corners
+                        ),
+                        showCheckmark: false, // Hide the checkmark icon
+                        onSelected: (bool selected) {
+                          setState(() {
+                            // Ensure only one chip is selected at a time
+                            selectedFilters.updateAll((key, value) => false); // Deselect all chips
+                            selectedFilters[option] = true; // Select the clicked chip
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
               SizedBox(height: 16),
 
@@ -591,7 +584,7 @@ class _HomePageState extends State<HomePage> {
                           ],
                         },
                         {
-                          'image': 'assets/images/room1.jpg',
+                          'image': 'assets/image/Image5.jpg',
                           'title': 'Luxury Condo',
                           'price': '\$500,000',
                           'location': 'Khan Toul Kork, Phnom Penh',
@@ -607,7 +600,7 @@ class _HomePageState extends State<HomePage> {
                           ],
                         },
                         {
-                          'image': 'assets/images/room2.jpg',
+                          'image': 'assets/image/Image6.jpg',
                           'title': 'Elegant Villa',
                           'price': '\$1,500,000',
                           'location': 'Khan Chamkar Mon, Phnom Penh',
@@ -624,7 +617,7 @@ class _HomePageState extends State<HomePage> {
                           ],
                         },
                         {
-                          'image': 'assets/images/room3.jpg',
+                          'image': 'assets/image/Property1.jpg',
                           'title': 'Cozy Apartment',
                           'price': '\$300,000',
                           'location': 'Khan Daun Penh, Phnom Penh',
@@ -641,7 +634,7 @@ class _HomePageState extends State<HomePage> {
                           ],
                         },
                         {
-                          'image': 'assets/images/room4.jpg',
+                          'image': 'assets/image/Image3.jpg',
                           'title': 'Spacious Townhouse',
                           'price': '\$800,000',
                           'location': 'Khan Toul Kork, Phnom Penh',
@@ -949,7 +942,32 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon:
+                Icon(Icons.dashboard, color: Color(0xFF322D29)), // Changed icon
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart, color: Colors.grey), // Changed icon
+            label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark, color: Colors.grey), // Changed icon
+            label: 'Bookmarks',
+          ),
+          BottomNavigationBarItem(
+            icon:
+                Icon(Icons.account_circle, color: Colors.grey), // Changed icon
+            label: 'Account',
+          ),
+        ],
+        selectedItemColor: Color(0xFF322D29),
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
+        backgroundColor: Colors.white,
+      ),
     );
   }
 }
@@ -1115,68 +1133,6 @@ class FilterChipWidget extends StatefulWidget {
 
   @override
   _FilterChipWidgetState createState() => _FilterChipWidgetState();
-}
-
-class _FilterChipWidgetState extends State<FilterChipWidget> {
-  bool isSelected = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return FilterChip(
-      label: Text(widget.label),
-      selected: isSelected,
-      selectedColor: Color(0xFF322D29),
-      labelStyle: TextStyle(
-        color: isSelected ? Colors.white : Colors.black,
-      ),
-      onSelected: (bool selected) {
-        setState(() {
-          isSelected = selected;
-        });
-      },
-    );
-  }
-}
-
-// Define a reusable FilterChipWidget
-class FilterChipWidget extends StatefulWidget {
-  final String label;
-
-  const FilterChipWidget({super.key, required this.label});
-
-  @override
-  _FilterChipWidgetState createState() => _FilterChipWidgetState();
-}
-
-class _FilterChipWidgetState extends State<FilterChipWidget> {
-  bool isSelected = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return FilterChip(
-      label: Text(widget.label),
-      selected: isSelected,
-      selectedColor: Color(0xFF322D29),
-      labelStyle: TextStyle(
-        color: isSelected ? Colors.white : Colors.black,
-      ),
-      onSelected: (bool selected) {
-        setState(() {
-          isSelected = selected;
-        });
-      },
-    );
-  }
-}
-
-// Define a reusable FilterChipWidget
-class FilterChipWidget extends StatefulWidget {
-  final String label;
-
-  const FilterChipWidget({super.key, required this.label});
-
-  @override
-  State<FilterChipWidget> createState() => _FilterChipWidgetState();
 }
 
 class _FilterChipWidgetState extends State<FilterChipWidget> {

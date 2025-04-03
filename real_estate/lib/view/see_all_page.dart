@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'property_detail.dart';
+import 'property_details.dart';
 
 class SeeAllPage extends StatelessWidget {
   final List<Map<String, dynamic>> properties;
@@ -11,7 +11,6 @@ class SeeAllPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Properties'),
-        backgroundColor: const Color(0xFF322D29),
       ),
       body: ListView.builder(
         itemCount: properties.length,
@@ -25,10 +24,10 @@ class SeeAllPage extends StatelessWidget {
                   builder: (context) => PropertyDetailPage(
                     mainImage: property['image'] as String,
                     roomImages: [
-                      'assets/images/room1.jpg',
-                      'assets/images/room2.jpg',
-                      'assets/images/room3.jpg',
-                      'assets/images/room4.jpg',
+                      'assets/image/P_Room1.jpg',
+                      'assets/image/P_Room2.jpg',
+                      'assets/image/P_Room3.jpg',
+                      'assets/image/P_Room4.jpg',
                     ],
                     title: property['title'] as String,
                     price: property['price'] as String,
