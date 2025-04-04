@@ -77,42 +77,4 @@ class ContactScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildBottomNavigationBar() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      height: 65,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.home, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.wallet, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.favorite_border, color: Colors.white),
-            onPressed: () {},
-          ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 137, 40, 216),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            ),
-            onPressed: () {},
-            icon: const Icon(Icons.person, color: Colors.white),
-            label: const Text("Profile", style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-  }
 }
