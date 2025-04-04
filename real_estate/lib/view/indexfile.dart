@@ -10,3 +10,4 @@ export 'package:real_estate/view/mortgage_cal.dart' hide main;
 export 'package:real_estate/view/user_profile_screen.dart' hide main;
 export 'package:real_estate/view/coming_soon_page.dart';
 export 'package:real_estate/view/contact_screen.dart';
+export 'package:real_estate/view/edit_info.dart';

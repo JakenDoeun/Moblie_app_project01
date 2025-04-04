@@ -20,6 +20,8 @@ class MyApp extends StatelessWidget {
         '/otp': (context) => const VerificationCodeScreen(),
         '/forgotPassword': (context) => const ForgotPasswordScreen(),
         '/contact': (context) => const ContactScreen(),
+        '/userInfo': (context) => const UserProfileScreen(),
+        '/editInfo': (context) => const EditInfo(),	
       },
     );
   }

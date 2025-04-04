@@ -13,7 +13,9 @@ class ContactScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous screen
+          },
         ),
       ),
       body: Column(
@@ -29,7 +31,7 @@ class ContactScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.grey,
+              color: Color.fromARGB(255, 224, 224, 224),
             ),
             child: const Icon(Icons.phone_in_talk, size: 60, color: Colors.black),
           ),
@@ -46,7 +48,6 @@ class ContactScreen extends StatelessWidget {
           _buildMenuItem(Icons.call, "Call Us", const Color.fromRGBO(172, 134, 102, 1)),
           const SizedBox(height: 25),
           const Spacer(), // Ensures bottom spacing
-          _buildBottomNavigationBar(),
         ],
       ),
     );

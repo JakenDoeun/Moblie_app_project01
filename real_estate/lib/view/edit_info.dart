@@ -1,23 +1,8 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const UserProfileScreen(),
-    );
-  }
-}
-
-class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({super.key});
+class EditInfo extends StatelessWidget {
+  const EditInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +13,9 @@ class UserProfileScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous screen
+          },
         ),
       ),
       body: SingleChildScrollView(
@@ -88,20 +75,23 @@ class UserProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                // implement the save functionality here with API call
+                Navigator.pop(context); // Go back to the previous screen
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 40),
-                minimumSize: const Size(250, 60),
+                minimumSize: const Size(200, 30),
               ),
-              child: const Text("Done", style: TextStyle(color: Colors.white, fontSize: 20)),
+              child: const Text("Done", style: TextStyle(color: Colors.white, fontSize: 18)),
             ),
             const SizedBox(height: 20),
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      
     );
   }
 
@@ -150,41 +140,4 @@ class UserProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomNavigationBar() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      height: 65,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.home, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.wallet, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.favorite_border, color: Colors.white),
-            onPressed: () {},
-          ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 137, 40, 216),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            ),
-            onPressed: () {},
-            icon: const Icon(Icons.person, color: Colors.white),
-            label: const Text("Profile", style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-  }
 }

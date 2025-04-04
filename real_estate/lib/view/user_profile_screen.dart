@@ -124,6 +124,7 @@ class _ProfileScreenState extends State<LanguageScreen> {
           color: Colors.grey.shade200,
           borderRadius: BorderRadius.circular(10),
         ),
+        
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -139,6 +140,11 @@ class _ProfileScreenState extends State<LanguageScreen> {
             ),
               IconButton(
                 onPressed: () {
+                  if (text == "User Information") {
+                Navigator.pushNamed(context, '/userInfo'); // Navigate to User Information screen
+              } else if (text == "Contact") {
+                Navigator.pushNamed(context, '/contact'); // Navigate to Contact screen
+              }
                 },
                 icon: const Icon(Icons.arrow_forward_ios, size: 20, color: Colors.black),
               ),
